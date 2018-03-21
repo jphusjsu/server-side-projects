@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Truck Parser - Homework 3</title>
+	<style>
+		body {
+			margin-top: 10%;
+		}
+		h1, p {
+			text-align: center;
+		}
+		input, button {
+			margin: auto;
+			display: block;
+		}
+		footer {
+			width: 100%;
+			height: 50px;
+			background-color: gray;
+			display: block;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+		}
+	</style>
+	<script type="text/javascript">
+		var jsonObject;
+		function viewJSON(output) {
+			var URL = output.URL.value;
+			if (URL == "") {
+				alert("Input box is empty, please input the file name for query");
+			} else if (URL == "truckinglist.json" || URL == "notruckinglist.json") {
+			} else {
+				alert("The JSON file that you are trying to query does not exist");
+			}
+			
+			function loadJSON(url) {
+				if (window.XMLHttpRequest) {
+					// support IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp = new XMLHttpRequest();
+				} else {
+					// support on IE6 and IE5
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.open("GET", url, false);
+				xmlhttp.send();
+				jsonObject = JSON.parse(xmlhttp.responseText);
+				return jsonObject;
+			}
+
+			jsonObject = loadJSON(URL);
+			if (window.ActiveXObject) {
+				if (jsonObject.parseError.errorCode != 0) {
+					var errMsg = jsonObject.parseError;
+					generateError(jsonObject);
+					resultsWindow = window.open("","Error", "height=300, width=350");
+					resultsWindow.document.write(html_text);
+				} else {
+					generateHTML(jsonObject);
+					resultsWindow = window.open("", "TruckParser", "height=800, width=1024");
+					resultsWindow.document.write(html_text);
+				}
+			} else {
+				jsonObject.onload = generateHTML(jsonObject);
+				resultsWindow = window.open("", "TruckParser", "height=800, width=1024");
+				resultsWindow.document.write(html_text);
+			}
+			resultsWindow.document.close();
+		}
+
+		function generateHTML(jsonObject) {
+			root = jsonObject.DocumentElement;
+			html_text = "<html><head><title>Top Trucking Companies</title></head><body>";
+			html_text += "<table border='2' cellspacing='5'>";
+			tableHeaders = jsonObject.Mainline.Table.Header.Data;
+			html_text += "<tbody>";
+			html_text += "<tr>";
+
+			var headers = {
+				"Company" : "Parent Company",
+				"Services" : "Subsidiary Portfolio / Services",
+				"Location" : "HQ / Info",
+				"Revenue" : "Annual Revenue ($ million)",
+				"Home Page" : "HomePage",
+				"Trucking with Logo" : "Logo"
+			}
+
+			for (i = 0 ; i < tableHeaders.length ; i++) {
+				inputHeader = tableHeaders[i];
+				if (inputHeader in headers) {
+					// console.log(inputHeader + " exists(as a key)");
+					html_text += "<th>" + headers[inputHeader] + "</th>";
+				} else if (checkValue(headers, inputHeader) === 1) {
+					// console.log(inputHeader + " exists(as a value)");
+					html_text += "<th>" + inputHeader + "</th>";
+				} else {
+					// console.log(inputHeader + " does not exist as key nor value");
+					alert("An error was found in the header data of the JSON file");
+					html_text = "";
+					html_text += "<p> The header data '" + inputHeader + "' was found in the JSON file and does not satisfy the rule. <br>Please revise the truckinglist.json file.</p>";
+					html_text += "<a href='JavaScript: window.close()'>Close This Window Here</a>";
+					return;
+				}
+			}
+
+			html_text += "</tr>";
+			tableContent = jsonObject.Mainline.Table.Row;
+			if (tableContent === undefined) {
+				alert("The JSON file does not contain any information about trucking companies");
+			}
+			tableContentNodeList = tableContent[0];
+			
+			for (i = 0 ; i < tableContent.length ; i++) {
+				tableContentNodeList = tableContent[i];
+				// console.log(tableContentNodeList);
+				html_text += "<tr>";
+				var tableContentKeys = Object.keys(tableContentNodeList);
+
+				for (j = 0 ; j < tableContentKeys.length ; j++) {
+					content = tableContentKeys[j];
+					if (tableContentKeys[j] == "Logo") {
+						html_text += "<td><img src='" + tableContentNodeList[content] + "' width='300' height='150' alt='Image Not Found'></td>";
+					} else if (tableContentKeys[j] == "Hubs") {
+						var hubsValues = tableContentNodeList[content].Hub;
+						html_text += "<td>";
+						if (hubsValues.length == 0) {
+							html_text += "";
+						} else {
+							html_text += "<ul>";
+						}
+						for (k = 0 ; k < hubsValues.length ; k++) {
+							if (k == 0) {
+								html_text += "<li><b>" + hubsValues[k] + "</b></li>";
+							} else {
+								html_text += "<li>" + hubsValues[k] + "</li>";
+							}
+						}
+						html_text += "</ul></td>";
+					} else if (tableContentKeys[j] == "HomePage") {
+						html_text += "<td><a href='" + tableContentNodeList[content] + "'>" + tableContentNodeList[content] + "</a></td>";
+					} else {
+						html_text += "<td>" + tableContentNodeList[content] + "</td>";
+					}
+				}
+				html_text += "</tr>";
+			}
+			html_text += "</tbody>";
+			html_text += "</table>";
+			html_text += "<br><a href='JavaScript: window.close()'>Close This Window Here</a>";
+			html_text += "</body></html>";
+		}
+
+		function checkValue(inputObj, target) {
+			for (j in inputObj) {
+				if (inputObj[j] === target) {
+					return 1;
+					break;
+				}
+			}
+			return 0;
+		}
+	</script>
+</head>
+<body>
+	<h1>Enter URL for Trucking List JSON File</h1>
+	<p>Enter the XML file's name:</p>
+	<form name="inputForm" method="POST" id="location">
+		<input type="text" name="URL" maxlength="100" size="30"/><br>
+		<button type="submit" name="queryBtn" onClick="viewJSON(this.form)">Submit Query</button>
+	</form>
+
+	<footer>
+		<p>&copy Jie Peng Hu - CS174: Spring 2018</p>
+	</footer>
+</body>
+</html>
