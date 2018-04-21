@@ -24,3 +24,9 @@ The website is able to run locally via Karaf server
 1. Open your web browser
 2. Input: http://localhost:8181/karaf-twitter
 
+Expected results:
+![Alt text](/karaf-hw/screenshots/karaf_homepage.jpg)
+
+![Alt text](/karaf-hw/screenshots/sample1.jpg)
+
+![Alt text](/karaf-hw/screenshots/Sample1_results.jpg)
