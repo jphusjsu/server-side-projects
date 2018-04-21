@@ -34,3 +34,6 @@ The website is able to run locally via Karaf server
 
 ### Sample results
 ![Alt text](/JSON-parse-HTML/screenshots/Sample1_results.jpg)
+
+## UML Class diagram
+![Alt text](/JSON-parse-HTML/screenshots/UMLTwitterAPI.png)
