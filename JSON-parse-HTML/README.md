@@ -30,7 +30,7 @@ The website is able to run locally via Karaf server
 ![Alt text](/JSON-parse-HTML/screenshots/karaf_homepage.jpg)
 
 ### Sample request
-![Alt text](/screenshots/sample1.jpg)
+![Alt text](/JSON-parse-HTML/screenshots/sample1.jpg)
 
 ### Sample results
-![Alt text](/screenshots/Sample1_results.jpg)
+![Alt text](/JSON-parse-HTML/screenshots/Sample1_results.jpg)
