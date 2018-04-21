@@ -25,7 +25,8 @@ The website is able to run locally via Karaf server
 2. Input: http://localhost:8181/karaf-twitter
 
 Expected results:
-![Alt text](/karaf-hw/screenshots/karaf_homepage.jpg)
+
+![Alt text](/JSON-parse-HTML/screenshots/karaf_homepage.jpg)
 
 ![Alt text](/karaf-hw/screenshots/sample1.jpg)
 
