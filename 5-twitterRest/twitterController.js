@@ -134,7 +134,7 @@ $(function() {
 							tbodyEl.append('\
 								<td>' + item +'</td>\
 								<td>' + key + '</td>\
-								<td>' + arr[i][key] + '</td>\
+								<td><a href="' + arr[i][key] + '">' + arr[i][key] + '</a></td>\
 								');
 							// console.log('key ' + key);
 							// console.log('Value ' + arr[i][key]);
