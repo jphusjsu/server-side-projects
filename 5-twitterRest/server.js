@@ -1,27 +1,3 @@
-// const http = require('http');
-// const jsonObj = require('./favs.json');
-// const fs = require('fs');
-// const dt = require('./twitterAPI');
-
-// http.createServer(function (req, res) {
-// 	res.writeHead(200, {'Content-Type': 'text/html'});
-// 	var readStream = fs.createReadStream('./index.html', 'utf8');
-// 	readStream.pipe(res);
-// }).listen(3000);
-
-// console.log('Listening on http:localhost:3000');
-
-// function readFile(res) {
-// 	fs.readFile('favs.json', 'utf8', function(err, data) {
-// 		// if (err) {
-// 		// 	res.writeHead(404);
-// 		// 	res.write('404 - File Not Found');
-// 		// 	throw err;
-// 		// }
-// 		return data;
-// 	});
-// }
-
 /*
 *	Author: Jie Peng Hu
 *	Description:
@@ -30,6 +6,7 @@
 *	creation of the endpoints for the RESTful API.
 */
 
+// Initiatialize the ExpressJS object to be used in the server
 var express = require('express');
 var app = express();
 const twitterJSONObj = require('./favs.json');
@@ -38,7 +15,9 @@ app.use(express.static(__dirname));
 
 // First endpoint for the API
 app.get('/allTweets', function(req, res) {
+	// Array to hold the results
 	var resultingTweets = [];
+	// Gather information from the given JSON file and add the objects to the array
 	for (i = 0 ; i < twitterJSONObj.length ; i++) {
 		resultingTweets.push({
 			created_at: twitterJSONObj[i].created_at, 
@@ -51,7 +30,9 @@ app.get('/allTweets', function(req, res) {
 
 // Second endpoint for the API
 app.get('/allUsers', function(req, res) {
+	// Array to hold the results
 	var resultingUsers = [];
+	// Gather information from the given JSON file and add the objects to the array
 	for (i = 0 ; i < twitterJSONObj.length ; i++) {
 		var userObj = twitterJSONObj[i].user
 		resultingUsers.push({
@@ -67,10 +48,14 @@ app.get('/allUsers', function(req, res) {
 
 // Third endpoint for the API: List all external links
 app.get('/allLinks', function(req, res) {
+	// Array to hold the results
 	var resultingLinks = [];
 	var groupedResults = {};
+	/* Define the regular expression to search for the pattern of a typical URL. 
+	This is capable of finding instances that starts from http or https and 
+	ends on .co, .io. or .com */
 	var regExp = /https?:\/\/[a-zA-Z0-9].[^\s]{2,}/;
-	
+	// Gather information from the given JSON file and add the objects to the array
 	for (i = 0 ; i < twitterJSONObj.length ; i++) {
 		var id = twitterJSONObj[i].id_str;
 		var rootObject = twitterJSONObj[i]
@@ -128,7 +113,9 @@ app.get('/allLinks', function(req, res) {
 
 // Fourth endpoint for the API (ALL tweets ID available)
 app.get('/allDetails', function(req, res) { 
+	// Array to hold the results
 	var resultingTweetsDetails = [];
+	// Gather information from the given JSON file and add the objects to the array
 	for (i = 0 ; i < twitterJSONObj.length ; i++) {
 		var id = twitterJSONObj[i].id_str;
 		resultingTweetsDetails.push({ [id]: {
@@ -139,20 +126,22 @@ app.get('/allDetails', function(req, res) {
 			}
 		});
 	}
-	let output = JSON.stringify(resultingTweetsDetails[0], null, 2);
-	console.log(output);
+	// let output = JSON.stringify(resultingTweetsDetails[0], null, 2);
+	// console.log(output);
 	res.send({ tweets: resultingTweetsDetails });
 });
 
 // Fourth endpoint for the API (Upon request)
 app.get('/allDetails/:tweetID', function(req, res) { 
+	// Retrieve the parameter from the user
 	var tweetID = req.params.tweetID;
+	// Array to hold the results
 	var resultingTweetsDetails = [];
+	// Gather information from the given JSON file and add the objects to the array
 	for (i = 0 ; i < twitterJSONObj.length ; i++) {
 		var id = twitterJSONObj[i].id_str;
 		// console.log(id);
 		// console.log('ID from params: ' + tweetID);
-
 		if (id == tweetID) {
 			resultingTweetsDetails.push({ [id]: {
 					created_at: twitterJSONObj[i].created_at,
@@ -169,12 +158,14 @@ app.get('/allDetails/:tweetID', function(req, res) {
 
 // Fifth endpoint for the API
 app.get('/profileInformation/:screenName', function(req, res) {
+	// Retrieve the parameter from the user
 	var screenNameParam = req.params.screenName;
+	// Array to hold the results
 	var profileInfo = [];
+	// Gather information from the given JSON file and add the objects to the array
 	for (i = 0 ; i < twitterJSONObj.length ; i++) {
 		var userObj = twitterJSONObj[i].user
 		var screenName = userObj["screen_name"];
-		
 		if (screenNameParam === screenName) {
 			profileInfo.push({
 				screen_name: userObj["screen_name"],
@@ -192,6 +183,8 @@ app.get('/profileInformation/:screenName', function(req, res) {
 	res.send({ info: profileInfo });
 });
 
-app.listen(3000, function() {
-	console.log('Server listening on PORT: 3000')
+// Define the port number for the server
+let PORT = 3000;
+app.listen(PORT, function() {
+	console.log('Server listening on PORT: ' + PORT);
 });

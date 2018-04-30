@@ -1,3 +1,11 @@
+<!--
+*	Author: Jie Peng Hu
+*	Description:
+*	This is the homepage that hosts basic instructions, buttons, and text fields. Also, 
+*	it serves as the client side that accepts requests for the user, which is send back to 
+*	the controller, who in turn, sends the request to the server. 
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +26,15 @@
 	</style>
 </head>
 <body>
-	<h3>Twitter API Home Page</h3>
+	<h1 style="color:blue; text-align: center">Twitter API Home Page</h1>
+	<hr>
+	<h3>Instructions to run this page:</h3>
+	<ul>
+		<li>In the following page, you will have the opportunity to interact with five different RESTful API created by gathering data from a given JSON file <a href="./favs.json">Source here</a></li>
+		<li>To interact with the first three APIs, the user simply clicks on the 'Get...' button and the results will be automatically reloaded without refreshing the page via AJAX calls</li>
+		<li>For the last two APIs, it requires an input for the user which are either tweet ID or user's screen name, respectively. It is recommended to play around with the APIs mentioned above to gather important information for the API request as the parameter is mandatory; otherwise, the results will be null</li>
+		<li>Lastly, after interaction with each of the API, the link to the endpoint is displayed within the section. This way, the user can directly see the JSON file where the results come from.</li>
+	</ul>
 	<hr>
 	<p>'All tweets' API request: 
 		<button id="all-tweets-btn" sytle="position='inline'">Get Tweets</button>
