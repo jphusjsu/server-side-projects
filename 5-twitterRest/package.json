@@ -1,0 +1,27 @@
+{
+  "name": "twitterrest",
+  "version": "1.0.0",
+  "description": "CS174: Assignment 5",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jphusjsu/server-side-projects.git"
+  },
+  "author": "Jie Peng Hu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jphusjsu/server-side-projects/issues"
+  },
+  "homepage": "https://github.com/jphusjsu/server-side-projects#readme",
+  "devDependencies": {
+    "express": "^4.16.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "jquery": "^3.3.1",
+    "underscore": "^1.9.0"
+  }
+}
